@@ -1,0 +1,16 @@
+{
+  "name": "telegram-psybot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.26.0",
+    "request": "^2.79.0"
+  }
+}
