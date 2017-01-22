@@ -37,6 +37,8 @@ function getDailyFractals(callback) {
   })
 }
 
+bot.on('message', (msg) => console.log(`(${msg.chat.title} / ${msg.from.first_name}) ${msg.text}`));
+
 bot.onText(/\!fractals/, function(msg) {
   var chatId = msg.chat.id;
   getDailyFractals((err, results) => {
