@@ -1,11 +1,13 @@
 'use strict';
 var TelegramBot = require('node-telegram-bot-api');
+var GW2Api = require('./lib/gw2-api');
 
 var TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN || '';
-var bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
-var GW2Api = require('./lib/gw2-api');
-var api = new GW2Api();
+var API_KEY = process.env.API_KEY || '';
+var GUILD_ID = process.env.GUILD_ID || '';
+
+var api = new GW2Api(API_KEY);
 
 function getDailyFractals(callback) {
   var match = "Daily Tier 4"
@@ -37,7 +39,18 @@ function getDailyFractals(callback) {
   })
 }
 
+var bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 bot.on('message', (msg) => console.log(`(${msg.chat.title} / ${msg.from.first_name}) ${msg.text}`));
+
+bot.onText(/\!motd/, function(msg) {
+  var chatId = msg.chat.id;
+  api.getMotd(GUILD_ID, (err, res) => {
+    bot.sendMessage(chatId, res.motd, {
+      "parse_mode": "Markdown",
+      "disable_web_page_preview": true
+    });
+  })
+})
 
 bot.onText(/\!fractals/, function(msg) {
   var chatId = msg.chat.id;
