@@ -41,21 +41,20 @@ function getDailyFractals(callback) {
 
 var bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 bot.on('message', (msg) => console.log(`(${msg.chat.title} / ${msg.from.first_name}) ${msg.text}`));
-
-bot.onText(/\!motd/, function(msg) {
+bot.on('message', (msg) => {
   var chatId = msg.chat.id;
-  api.getMotd(GUILD_ID, (err, res) => {
-    bot.sendMessage(chatId, res.motd, {
-      "parse_mode": "Markdown",
-      "disable_web_page_preview": true
-    });
-  })
-})
-
-bot.onText(/\!fractals/, function(msg) {
-  var chatId = msg.chat.id;
-  getDailyFractals((err, results) => {
-    var output = "Today's daily fractals: \n```\n"
+  if (msg.text.match(/\!motd/)) {
+    api.getMotd(GUILD_ID, (err, res) => {
+      bot.sendMessage(chatId, res.motd, {
+        "parse_mode": "Markdown",
+        "disable_web_page_preview": true
+      });
+    })
+  }
+  
+  if(msg.text.match(/\!fractals/)) {
+    getDailyFractals((err, results) => {
+      var output = "Today's daily fractals: \n```\n"
 
       results.forEach(res => {
           var name = res.name.substr("Daily Tier 4".length + 1)
@@ -69,5 +68,6 @@ bot.onText(/\!fractals/, function(msg) {
       bot.sendMessage(chatId, output, {
         "parse_mode": "Markdown",
       });
-  })
-})
+    })
+  }
+});
