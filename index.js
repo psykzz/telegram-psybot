@@ -42,6 +42,10 @@ function getDailyFractals(callback) {
 var bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 bot.on('message', (msg) => console.log(`(${msg.chat.title} / ${msg.from.first_name}) ${msg.text}`));
 bot.on('message', (msg) => {
+  if(!msg ||!msg.chat || !msg.text) {
+    return;
+  }
+  
   var chatId = msg.chat.id;
   if (msg.text.match(/\!motd/)) {
     api.getMotd(GUILD_ID, (err, res) => {
