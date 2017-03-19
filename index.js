@@ -20,12 +20,16 @@ function getDailyFractals(callback) {
   var match = "Daily Tier 4"
   api.getAchievementsByCategory(88, (err, res) => {
       if(err) {
-        callback(err)
+        return callback(err)
       }
     
       var promises = res.achievements.map((achiev) => {
           return new Promise((resolve, reject) => {
               api.getAchievementDetails(achiev, (err, detail) => {
+                  if(err) {
+                    return callback(err)
+                  }
+                
                   // Check the name is valid
                   if (detail.name.indexOf(match) === -1) {
                       // we don't want to reject here as it fails the entire chain
