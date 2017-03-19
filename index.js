@@ -61,7 +61,7 @@ bot.on('message', (msg) => {
   if (msg.text.match(/\!motd/)) {
     api.getMotd(GUILD_ID, (err, res) => {
        if(err) {
-        onError(bot, chatId, "Error getting motd. Is the GW2 API Down?")
+        return onError(bot, chatId, "Error getting motd. Is the GW2 API Down?")
        }
       
       bot.sendMessage(chatId, res.motd, {
@@ -74,7 +74,7 @@ bot.on('message', (msg) => {
   if(msg.text.match(/\!fractals/)) {
     getDailyFractals((err, results) => {
       if(err) {
-        onError(bot, chatId, "Error getting daily fractals. Is the GW2 API Down?")
+        return onError(bot, chatId, "Error getting daily fractals. Is the GW2 API Down?")
       }
       
       var output = "Today's daily fractals: \n```\n"
